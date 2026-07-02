@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLZ — Video Editor</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --bg: #0A0A0A;
+    --surface: #131313;
+    --text: #FAFAF8;
+    --text-dim: #7A7A78;
+    --accent: #C8FF4D;
+    --line: #232323;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  img,video{display:block;max-width:100%;}
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(10,10,10,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:64px;
+  }
+  .logo{
+    font-family:'Archivo',sans-serif;
+    font-weight:900;
+    font-size:18px;
+    letter-spacing:-0.02em;
+  }
+  .logo span{color:var(--accent);}
+  .nav-links{
+    display:flex;
+    gap:28px;
+    list-style:none;
+  }
+  .nav-links a{
+    color:var(--text-dim);
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+    transition:color .2s;
+  }
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    background:var(--accent);
+    color:#0A0A0A;
+    padding:9px 18px;
+    border-radius:100px;
+    font-size:13px;
+    font-weight:600;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:96px 0 72px;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    color:var(--text-dim);
+    font-weight:500;
+    margin-bottom:24px;
+  }
+  .eyebrow .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--accent);
+    flex-shrink:0;
+  }
+  h1{
+    font-family:'Archivo',sans-serif;
+    font-weight:900;
+    font-size:clamp(40px, 6.5vw, 84px);
+    line-height:0.98;
+    letter-spacing:-0.03em;
+    max-width:880px;
+  }
+  h1 .accent{color:var(--accent);}
+  .hero-sub{
+    margin-top:24px;
+    font-size:18px;
+    color:var(--text-dim);
+    max-width:480px;
+    line-height:1.5;
+  }
+  .hero-meta{
+    display:flex;
+    gap:40px;
+    margin-top:56px;
+    flex-wrap:wrap;
+  }
+  .meta-item{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .meta-num{
+    font-family:'Archivo',sans-serif;
+    font-weight:700;
+    font-size:28px;
+  }
+  .meta-label{
+    font-size:13px;
+    color:var(--text-dim);
+  }
+
+  /* ---------- CLIENT STRIP ---------- */
+  .clients{
+    padding:28px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .clients .wrap{
+    display:flex;
+    align-items:center;
+    gap:32px;
+    flex-wrap:wrap;
+  }
+  .clients-label{
+    font-size:12px;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .client-pill{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:15px;
+    font-weight:600;
+    color:var(--text);
+    text-decoration:none;
+    padding:7px 14px;
+    border:1px solid var(--line);
+    border-radius:100px;
+    transition:border-color .2s;
+  }
+  .client-pill:hover{border-color:var(--text-dim);}
+  .client-pill i{font-size:14px;color:var(--text-dim);}
+
+  /* ---------- CREATOR SECTION ---------- */
+  .creator-section{
+    padding:80px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .creator-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:36px;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .creator-name{
+    font-family:'Archivo',sans-serif;
+    font-weight:900;
+    font-size:clamp(28px, 4vw, 44px);
+    letter-spacing:-0.02em;
+  }
+  .creator-tag{
+    display:inline-block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-bottom:8px;
+  }
+  .creator-format{
+    font-size:15px;
+    color:var(--text-dim);
+    text-align:right;
+    max-width:280px;
+  }
+
+  .creator-stats{
+    display:flex;
+    gap:10px;
+    margin-bottom:32px;
+    flex-wrap:wrap;
+  }
+  .stat-badge{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 16px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:100px;
+    text-decoration:none;
+    color:inherit;
+    transition:border-color .2s;
+  }
+  .stat-badge:hover{border-color:var(--text-dim);}
+  .stat-badge i{font-size:15px;color:var(--accent);}
+  .stat-badge .stat-num{
+    font-family:'Archivo',sans-serif;
+    font-weight:700;
+    font-size:15px;
+  }
+  .stat-badge .stat-label{
+    font-size:13px;
+    color:var(--text-dim);
+  }
+
+  .video-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:14px;
+  }
+  .video-grid.grid-compact{
+    grid-template-columns:repeat(2, minmax(0, 320px));
+    justify-content:start;
+  }
+  .video-card{
+    position:relative;
+    aspect-ratio:9/16;
+    background:var(--surface);
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    cursor:pointer;
+  }
+  .video-card video,
+  .video-card .ph{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .video-card .ph{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    color:var(--text-dim);
+    background:
+      repeating-linear-gradient(135deg, #161616, #161616 10px, #131313 10px, #131313 20px);
+  }
+  .video-card .ph i{font-size:26px;}
+  .video-card .ph span{font-size:12px;font-weight:500;}
+
+  .video-label{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    padding:14px 12px 12px;
+    background:linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    font-size:13px;
+    font-weight:600;
+    color:var(--text);
+  }
+
+  .view-badge{
+    position:absolute;
+    top:10px;
+    left:10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:var(--accent);
+    color:#0A0A0A;
+    font-size:12px;
+    font-weight:700;
+    padding:6px 10px;
+    border-radius:100px;
+    z-index:2;
+  }
+  .view-badge i{font-size:13px;}
+
+  .video-card.featured{
+    grid-column:span 2;
+    grid-row:span 2;
+  }
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{
+    padding:100px 0;
+    text-align:center;
+  }
+  .final-cta h2{
+    font-family:'Archivo',sans-serif;
+    font-weight:900;
+    font-size:clamp(30px, 5vw, 56px);
+    letter-spacing:-0.02em;
+    max-width:700px;
+    margin:0 auto 32px;
+    line-height:1.05;
+  }
+  .cta-button{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:var(--accent);
+    color:#0A0A0A;
+    font-weight:700;
+    font-size:16px;
+    padding:16px 32px;
+    border-radius:100px;
+    text-decoration:none;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:32px 0;
+  }
+  footer .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .footer-links{
+    display:flex;
+    gap:20px;
+    list-style:none;
+  }
+  .footer-links a{
+    color:var(--text-dim);
+    text-decoration:none;
+    font-size:14px;
+  }
+  .footer-links a:hover{color:var(--text);}
+  .footer-copy{
+    font-size:13px;
+    color:var(--text-dim);
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .video-grid{grid-template-columns:repeat(2, 1fr);}
+    .video-card.featured{grid-column:span 2; grid-row:span 1; aspect-ratio:16/9;}
+    .creator-head{flex-direction:column;align-items:flex-start;}
+    .creator-format{text-align:left;}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 20px;}
+    .nav-links{display:none;}
+    .hero{padding:56px 0 48px;}
+    .hero-meta{gap:28px;margin-top:40px;}
+    .video-grid{grid-template-columns:repeat(2, 1fr);gap:10px;}
+    .video-card.featured{grid-column:span 2;aspect-ratio:9/16;}
+    .creator-section{padding:56px 0;}
+    .final-cta{padding:64px 0;}
+    .clients .wrap{gap:14px;}
+    .creator-stats{gap:8px;margin-bottom:24px;}
+    .stat-badge{padding:8px 12px;font-size:13px;}
+    .stat-badge[href] .stat-label{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">BLZ<span>.</span></div>
+    <ul class="nav-links">
+      <li><a href="#mateo">MateoMRB</a></li>
+      <li><a href="#agencia">Agencia</a></li>
+      <li><a href="#tomi">Tomi Stats</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a href="https://wa.me/5492901510281?text=Hola!%20Estoy%20interesado%20en%20el%20servicio%20de%20Edici%C3%B3n%20de%20Video" target="_blank" rel="noopener" class="nav-cta">Hablemos</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span> Disponible para nuevos proyectos</div>
+    <h1>Edito lo que la<br>gente no <span class="accent">se salta.</span></h1>
+    <p class="hero-sub">Video editor para creadores y marcas. Sin relleno, sin vueltas.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-num">+50</span>
+        <span class="meta-label">Clips destacados</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-num">400K+</span>
+        <span class="meta-label">Seguidores alcanzados</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="clients">
+  <div class="wrap">
+    <span class="clients-label">Trabajo con</span>
+    <a href="https://www.youtube.com/@mateomrb" target="_blank" rel="noopener" class="client-pill"><i class="ti ti-bulb"></i> MateoMRB</a>
+    <a href="https://www.youtube.com/@TomiStats" target="_blank" rel="noopener" class="client-pill"><i class="ti ti-microphone"></i> Tomi Stats</a>
+    <a href="#agencia" class="client-pill"><img src="logos/logo-dia.png" alt="Día" style="height:16px;display:block;"></a>
+    <a href="#agencia" class="client-pill"><img src="logos/logo-cabify.png" alt="Cabify" style="height:16px;display:block;"></a>
+  </div>
+</section>
+
+<section class="creator-section" id="mateo">
+  <div class="wrap">
+    <div class="creator-head">
+      <div>
+        <span class="creator-tag">Educativo / marca personal</span>
+        <h2 class="creator-name">MateoMRB</h2>
+      </div>
+      <p class="creator-format">Contenido educativo y storytelling de marca personal.</p>
+    </div>
+    <div class="creator-stats">
+      <a href="https://www.youtube.com/@mateomrb" target="_blank" rel="noopener" class="stat-badge">
+        <i class="ti ti-brand-youtube"></i>
+        <span class="stat-num">YouTube</span>
+        <span class="stat-label">@mateomrb</span>
+      </a>
+      <a href="https://www.tiktok.com/@mateomrb" target="_blank" rel="noopener" class="stat-badge">
+        <i class="ti ti-brand-tiktok"></i>
+        <span class="stat-num">TikTok</span>
+        <span class="stat-label">@mateomrb</span>
+      </a>
+      <div class="stat-badge">
+        <i class="ti ti-users"></i>
+        <span class="stat-num">+400K</span>
+        <span class="stat-label">seguidores</span>
+      </div>
+    </div>
+    <div class="video-grid">
+      <div class="video-card featured">
+        <video poster="videos/mateo-inversion-mayoristas-poster.jpg" autoplay muted loop playsinline preload="auto">
+          <source src="videos/mateo-inversion-mayoristas.mp4" type="video/mp4">
+        </video>
+        <div class="view-badge"><i class="ti ti-eye"></i> 2.2M views</div>
+        <div class="video-label">Reel educativo — Inversión en mayoristas</div>
+      </div>
+      <div class="video-card">
+        <video poster="videos/mateo-comenta-agencia-poster.jpg" autoplay muted loop playsinline preload="auto">
+          <source src="videos/mateo-comenta-agencia.mp4" type="video/mp4">
+        </video>
+        <div class="video-label">Motion graphics + screen recording</div>
+      </div>
+      <div class="video-card">
+        <video poster="videos/mateo-cotizar-auto-poster.jpg" autoplay muted loop playsinline preload="auto">
+          <source src="videos/mateo-cotizar-auto.mp4" type="video/mp4">
+        </video>
+        <div class="video-label">Tutorial con captura de pantalla</div>
+      </div>
+      <div class="video-card">
+        <video poster="videos/mateo-ia-te-va-a-salvar-poster.jpg" autoplay muted loop playsinline preload="auto">
+          <source src="videos/mateo-ia-te-va-a-salvar.mp4" type="video/mp4">
+        </video>
+        <div class="video-label">Hook + corte rápido</div>
+      </div>
+      <div class="video-card">
+        <video poster="videos/mateo-fase-de-testeo-poster.jpg" autoplay muted loop playsinline preload="auto">
+          <source src="videos/mateo-fase-de-testeo.mp4" type="video/mp4">
+        </video>
+        <div class="video-label">Detrás de escena / proceso</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="creator-section" id="agencia">
+  <div class="wrap">
+    <div class="creator-head">
+      <div>
+        <span class="creator-tag">Agencia Creativa</span>
+        <h2 class="creator-name">Trabajo en Agencia</h2>
+      </div>
+      <p class="creator-format">Videos de formato corto para marcas de escala nacional.</p>
+    </div>
+
+    <!-- DÍA -->
+    <div style="margin-bottom:40px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+        <img src="logos/logo-dia.png" alt="Día" style="height:24px;display:block;">
+        <span style="font-size:13px;color:var(--text-dim);font-weight:500;">Supermercado · Redes sociales</span>
+      </div>
+      <div class="video-grid">
+        <div class="video-card featured">
+          <video poster="videos/dia-app-descarga-poster.jpg" muted loop playsinline preload="auto">
+            <source src="videos/dia-app-descarga.mp4" type="video/mp4">
+          </video>
+          <div class="video-label">App & descarga</div>
+        </div>
+        <div class="video-card">
+          <video poster="videos/dia-descuento-poster.jpg" muted loop playsinline preload="auto">
+            <source src="videos/dia-descuento.mp4" type="video/mp4">
+          </video>
+          <div class="video-label">Promo descuento</div>
+        </div>
+        <div class="video-card">
+          <video poster="videos/dia-mazamorra-poster.jpg" muted loop playsinline preload="auto">
+            <source src="videos/dia-mazamorra.mp4" type="video/mp4">
+          </video>
+          <div class="video-label">Producto — Mazamorra</div>
+        </div>
+        <div class="video-card">
+          <video poster="videos/dia-promo-poster.jpg" muted loop playsinline preload="auto">
+            <source src="videos/dia-promo.mp4" type="video/mp4">
+          </video>
+          <div class="video-label">Campaña promo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CABIFY -->
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+        <img src="logos/logo-cabify.png" alt="Cabify" style="height:24px;display:block;">
+        <span style="font-size:13px;color:var(--text-dim);font-weight:500;">App de transporte · Redes sociales</span>
+      </div>
+      <div class="video-grid grid-compact">
+        <div class="video-card featured">
+          <video poster="videos/cabify-dancing-poster.jpg" muted loop playsinline preload="auto">
+            <source src="videos/cabify-dancing.mp4" type="video/mp4">
+          </video>
+          <div class="video-label">Contenido de marca</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="creator-section" id="tomi">
+  <div class="wrap">
+    <div class="creator-head">
+      <div>
+        <span class="creator-tag">Podcast</span>
+        <h2 class="creator-name">Tomi Stats</h2>
+      </div>
+      <p class="creator-format">Edición de videos largos y cortes de highlights para Shorts y contenido vertical.</p>
+    </div>
+    <div class="creator-stats">
+      <a href="https://www.youtube.com/@TomiStats" target="_blank" rel="noopener" class="stat-badge">
+        <i class="ti ti-brand-youtube"></i>
+        <span class="stat-num">YouTube</span>
+        <span class="stat-label">@TomiStats</span>
+      </a>
+    </div>
+    <div class="video-grid grid-compact">
+      <div class="video-card">
+        <video poster="videos/tomi-reaccion-1-poster.jpg" muted loop playsinline preload="auto">
+          <source src="videos/tomi-reaccion-1.mp4" type="video/mp4">
+        </video>
+        <div class="video-label">Reacción con overlays</div>
+      </div>
+      <div class="video-card">
+        <video poster="videos/tomi-reaccion-2-poster.jpg" muted loop playsinline preload="auto">
+          <source src="videos/tomi-reaccion-2.mp4" type="video/mp4">
+        </video>
+        <div class="video-label">Corte dinámico + inserts</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta" id="contacto">
+  <div class="wrap">
+    <h2>¿Tu marca necesita contenido que la gente vea hasta el final?</h2>
+    <a href="https://wa.me/5492901510281?text=Hola!%20Estoy%20interesado%20en%20el%20servicio%20de%20Edici%C3%B3n%20de%20Video" target="_blank" rel="noopener" class="cta-button">Hablemos <i class="ti ti-arrow-right"></i></a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="footer-copy">BLZ Design — Buenos Aires</span>
+    <ul class="footer-links">
+      <li><a href="mailto:gabioblolz@gmail.com">gabioblolz@gmail.com</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
